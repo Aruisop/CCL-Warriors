@@ -45,7 +45,7 @@ Three people. Different strengths. One submission.
 
 | Member | What They Actually Did |
 |--------|------------------------|
-| **Aarya** | Phase 1 calibration layer, post-hoc forensic analysis, final model architecture (v7.0) |
+| **Aarya** | Post-hoc forensic analysis, final model architecture (v7.0) |
 | **Manas** | Research-backed refinements (v6.0–v6.1), backtesting framework, damped ensemble weights |
 | **Pranav** | Foundation engine (v1.0–v5.0), 8-flaw forensic audit, full pipeline architecture |
 
@@ -100,9 +100,8 @@ flowchart TD
     C3 --> E["⚖️ Adaptive Blend\nexpert_weight = f(avg_accuracy) ∈ 35%–90%"]
     D5 --> E
 
-    E --> F["🔧 Phase 1 Calibration\nBlend with 6 known P1 actuals\nconfidence: 45%–80%"]
-    F --> G["📋 IP Phone Reconciliation\nDesk_1 + Desk_2 + Desk_3 = 27,337"]
-    G --> H["✅ Final Forecast\n74,660 total units across 20 products"]
+    E --> F["📋 IP Phone Reconciliation\nDesk_1 + Desk_2 + Desk_3 = 27,337"]
+    F --> G["✅ Final Forecast\n74,660 total units across 20 products"]
 
     style A fill:#1a1a2e,color:#e0e0e0
     style E fill:#16213e,color:#e0e0e0
@@ -206,10 +205,10 @@ timeline
              : Seasonal naive safety net added
              : Expert weight floor raised to 35%
              : 72,509 total units
-        v7.0 : Phase 1 calibration layer
-             : IP Phone aggregate reconciliation
+        v7.0 : IP Phone aggregate reconciliation
              : 84.3% accuracy on known products
              : 74,660 total — SUBMITTED ✅
+             
 ```
 
 ### Version Delta Table
@@ -223,7 +222,7 @@ timeline
 | v5.0 | Pranav | 69,361 | Forensic audit: 8 flaws fixed, signal pruning |
 | v6.0 | Manas | 73,629 | Damped equal weights, pattern-based rules |
 | v6.1 | Manas | 72,509 | Backtest-validated MA4 revert + safety net |
-| **v7.0** | **Aarya** | **74,660** | **Phase 1 calibration + aggregate reconciliation** |
+| **v7.0** | **Aarya** | **74,660** | **Aggregate reconciliation** |
 
 ---
 
@@ -261,13 +260,7 @@ We didn't submit it.
 
 The M4/M5 competition research is unambiguous: simpler models generalize better to unseen data. We chose the model we could explain, defend, and trust, not the one that squeezed out an extra percentage point on the training set.
 
-### 4. Phase 1 Calibration Confidence
-
-The tricky one. We had 6 Phase 1 actuals we could use to calibrate Phase 2. Higher confidence means better accuracy on those products, but risk overfitting if Phase 1 and Phase 2 scopes diverged.
-
-We went conservative (45–80% confidence), lowest on products with suspicious rebounds. Bayesian updating, not blind copying.
-
-### 5. When Structural Signals Are Worse Than Doing Nothing
+### 4. When Structural Signals Are Worse Than Doing Nothing
 
 This one stung. Backtesting revealed our structural signals barely outperformed seasonal naive:
 
@@ -385,7 +378,7 @@ CCL-Warriors/
 │   │
 │   └── v7_final/
 │       ├── forecast_prediction.py     # v7.0 — SUBMITTED MODEL ✅
-│       └── v7_changes.md              # Phase 1 calibration docs
+│       └── v7_changes.md              # Changes made and backtested
 │
 ├── analysis/
 │   ├── p2_accuracy_analysis.py        # v5 vs v6.1 vs v7 comparison
