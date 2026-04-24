@@ -1,0 +1,72 @@
+<svg width="680" height="200" viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>CCL Warriors — Cisco Forecast League 2026 National Finalists</title>
+
+  <!-- Background -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="680" y2="200">
+      <stop offset="0%" stop-color="#0d0d0d"/>
+      <stop offset="100%" stop-color="#141414"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="680" height="200" fill="url(#bg)"/>
+
+  <!-- Border -->
+  <rect x="1" y="1" width="678" height="198" rx="10" stroke="#2a2a2a" stroke-width="1" fill="none"/>
+
+  <!-- Top Accent -->
+  <rect x="1" y="1" width="678" height="3" fill="#c9a84c"/>
+
+  <!-- LEFT BLOCK -->
+  <text x="32" y="44" font-family="monospace" font-size="9" fill="#666">CCL WARRIORS</text>
+
+  <text x="30" y="90" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#f5f5f5">
+    Forecast
+  </text>
+  <text x="30" y="128" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#f5f5f5">
+    League <tspan fill="#c9a84c">'26</tspan>
+  </text>
+
+  <rect x="30" y="140" width="150" height="22" rx="4" fill="#1f1f1f"/>
+  <text x="105" y="155" text-anchor="middle" font-family="monospace" font-size="9" fill="#aaa">
+    NATIONAL FINALISTS
+  </text>
+
+  <!-- Divider -->
+  <line x1="200" y1="24" x2="200" y2="176" stroke="#2a2a2a" stroke-width="1"/>
+
+  <!-- STAT 1 -->
+  <text x="220" y="44" font-family="monospace" font-size="9" fill="#666">RANK</text>
+  <text x="220" y="82" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#c9a84c">4th</text>
+  <text x="220" y="102" font-family="Arial, sans-serif" font-size="11" fill="#777">Place Finals</text>
+
+  <line x1="220" y1="114" x2="320" y2="114" stroke="#2a2a2a" stroke-width="1"/>
+  <text x="220" y="130" font-family="monospace" font-size="8" fill="#555">CISCO FORECAST LEAGUE</text>
+
+  <!-- Divider -->
+  <line x1="332" y1="24" x2="332" y2="176" stroke="#2a2a2a" stroke-width="1"/>
+
+  <!-- STAT 2 -->
+  <text x="350" y="44" font-family="monospace" font-size="9" fill="#666">BEST ACCURACY</text>
+  <text x="350" y="82" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#4caf7d">98.8%</text>
+  <text x="350" y="102" font-family="Arial, sans-serif" font-size="11" fill="#777">Phone Desk_2</text>
+
+  <line x1="350" y1="114" x2="470" y2="114" stroke="#2a2a2a" stroke-width="1"/>
+  <text x="350" y="130" font-family="monospace" font-size="8" fill="#555">6 PRODUCTS ABOVE 85%</text>
+
+  <!-- Divider -->
+  <line x1="480" y1="24" x2="480" y2="176" stroke="#2a2a2a" stroke-width="1"/>
+
+  <!-- STAT 3 -->
+  <text x="500" y="44" font-family="monospace" font-size="9" fill="#666">PRODUCTS</text>
+  <text x="500" y="82" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#4a9edd">20</text>
+  <text x="500" y="102" font-family="Arial, sans-serif" font-size="11" fill="#777">SKUs forecasted</text>
+
+  <line x1="500" y1="114" x2="660" y2="114" stroke="#2a2a2a" stroke-width="1"/>
+
+  <!-- STAT 4 -->
+  <text x="500" y="132" font-family="monospace" font-size="9" fill="#666">ITERATIONS</text>
+  <text x="500" y="162" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#a78bfa">v1 → v7</text>
+  <text x="500" y="178" font-family="Arial, sans-serif" font-size="11" fill="#777">7 model versions</text>
+
+</svg>
