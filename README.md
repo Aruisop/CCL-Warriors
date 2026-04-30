@@ -440,7 +440,7 @@ We reverted changes that hurt. We killed a model we spent days building. We docu
 
 MIT License — see [LICENSE](LICENSE) for details.
 
----
+----
 
 <div align="center">
 
