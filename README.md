@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/dependencies-openpyxl-blue?style=flat-square" alt="Dependencies">
   <img src="https://img.shields.io/badge/status-competition%20complete-success?style=flat-square" alt="Status">
   <img src="https://img.shields.io/badge/result-4th%20place%2C%20CFL--Finals-orange?style=flat-square" alt="Result">
-  <img src="https://img.shields.io/badge/license-MIT-lightgrey?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/license-Apache 2.0-lightgrey?style=flat-square" alt="License">
 </p>
 
 ---
