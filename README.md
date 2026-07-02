@@ -2,88 +2,104 @@
   <img src="assets/banner.svg" width="100%">
 </p>
 
+<h1 align="center">CCL Warriors</h1>
+<p align="center"><strong>Three university students tried to predict what Cisco enterprises would buy next quarter. Here is everything that went right, everything that went wrong, and the model we ended up trusting.</strong></p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/dependencies-openpyxl-blue?style=flat-square" alt="Dependencies">
+  <img src="https://img.shields.io/badge/status-competition%20complete-success?style=flat-square" alt="Status">
+  <img src="https://img.shields.io/badge/result-4th%20place%2C%20CFL--Finals-orange?style=flat-square" alt="Result">
+  <img src="https://img.shields.io/badge/license-MIT-lightgrey?style=flat-square" alt="License">
+</p>
+
 ---
 
 ## The Story
 
-We were three university students given a deceptively simple challenge: *predict how many Cisco routers, phones, and switches enterprises would buy next quarter.*
+We were given a problem that sounds simple until you actually try to solve it: predict how many routers, phones, and switches enterprises Cisco will buy next quarter.
 
-Simple to state. Brutally hard to do well.
+Here is why that is hard. Guess 20% too high, and Cisco is now sitting on millions of dollars of hardware nobody wants. Guess 20% too low, and customers cannot get the equipment they need. There is not much room for error, and the stakes are not hypothetical.
 
-Over-forecast by 20% and Cisco is sitting on millions of dollars of dead inventory. Under-forecast by 20% and customers can't get the hardware they need. The margin for error is razor-thin, and the stakes are very real.
+So we spent months building a forecasting model, then breaking it, then figuring out why it broke. We reverted changes we were genuinely proud of because backtesting proved us wrong. We kept coming back to one question: when do you trust the human experts, and when do you trust the numbers instead?
 
-What followed was months of iteration, forensic auditing our own models, reverting changes we were proud of when backtesting proved us wrong, and chasing down a question that kept us up at night: *when should you trust the experts, and when should you trust the numbers?*
+We did not win. We finished 4th, just off the podium. But we walked away with a 7-version forecasting engine that hit 98.8% accuracy on our best product, landed 6 products above 85% accuracy, and taught us more about uncertainty and model design than a semester of coursework could have.
 
-We didn't win. We came 4th, missing the podium by the narrowest of margins. But we built something we're genuinely proud of: a 7-version forecasting engine that hit **98.8% accuracy on our best product**, got **6 products above 85%**, and taught us more about uncertainty, humility, and model design than any textbook could.
-
-This repository is the full story of how we got there.
+This README is the full story, including the parts where we were wrong.
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [The Team](#-the-team)
-- [Competition Overview](#-competition-overview)
-- [Architecture](#-architecture)
-- [Phase 1: The Foundation](#-phase-1-the-foundation)
-- [Phase 2: The Evolution](#-phase-2-the-evolution)
-- [Version History](#-version-history-v10--v70)
-- [Key Tradeoffs & Hard Decisions](#-key-tradeoffs--hard-decisions)
-- [Results](#-results)
-- [The Surge Nobody Predicted](#-the-surge-nobody-predicted)
-- [Business Insights](#-business-insights)
-- [Repository Structure](#-repository-structure)
-- [Quick Start](#-quick-start)
-- [Lessons Learned](#-lessons-learned)
-- [License](#-license)
-
----
-
-## 👥 The Team
-
-Three people. Different strengths. One submission.
-
-| Member | What They Actually Did |
-|--------|------------------------|
-| **Aarya** | Post-hoc forensic analysis, final model architecture (v7.0) |
-| **Manas** | Research-backed refinements (v6.0–v6.1), backtesting framework, damped ensemble weights |
-| **Pranav** | Foundation engine (v1.0–v5.0), 8-flaw forensic audit, full pipeline architecture |
-
-Each version in this repo has a clear owner. We believed in accountability. No one hides behind "the team did it."
+- [The Team](#the-team)
+- [Competition Overview](#competition-overview)
+- [Architecture](#architecture)
+- [Phase 1: The Foundation](#phase-1-the-foundation)
+- [Phase 2: The Evolution](#phase-2-the-evolution)
+- [Version History](#version-history-v10-to-v70)
+- [Key Tradeoffs and Hard Decisions](#key-tradeoffs-and-hard-decisions)
+- [Results](#results)
+- [The Surge Nobody Predicted](#the-surge-nobody-predicted)
+- [Business Insights](#business-insights)
+- [Repository Structure](#repository-structure)
+- [Quick Start](#quick-start)
+- [Lessons Learned](#lessons-learned)
+- [License](#license)
 
 ---
 
-## 🏆 Competition Overview
+## The Team
 
-The **Cisco Forecast League (CFL)** is a national competition where university teams forecast quarterly demand for Cisco hardware products using real historical data, expert forecasts, and channel intelligence.
+Three people, three different jobs, one submission. We split the work by version so nobody could hide behind "the team did it."
 
-The scoring formula is unforgiving:
+<table>
+  <tr>
+    <td align="center" width="140"><strong>Aarya</strong></td>
+    <td>Post-hoc forensic analysis and the final model architecture, v7.0.</td>
+  </tr>
+  <tr>
+    <td align="center" width="140"><strong>Manas</strong></td>
+    <td>Research-backed refinements across v6.0 and v6.1, the backtesting framework, and the damped ensemble weights.</td>
+  </tr>
+  <tr>
+    <td align="center" width="140"><strong>Pranav</strong></td>
+    <td>Built the foundation engine from v1.0 through v5.0, ran the 8-flaw forensic audit, and designed the full pipeline architecture.</td>
+  </tr>
+</table>
+
+---
+
+## Competition Overview
+
+The Cisco Forecast League (CFL) is a national competition. University teams forecast quarterly demand for Cisco hardware using real historical data, expert forecasts, and channel intelligence.
+
+The scoring formula does not forgive laziness:
 
 ```
-Cisco Accuracy = max(0, 1 − |forecast − actual| / actual)
+Cisco Accuracy = max(0, 1 - |forecast - actual| / actual)
 ```
 
-And it's **cost-weighted**. High-value products like routers carry 5–10× more weight than switches. You can be perfect on 15 SKUs and still lose badly if you miss one expensive product by a lot.
+And it is cost-weighted. Routers and other high-value products carry 5 to 10 times more weight than switches. You could nail 15 SKUs perfectly and still lose badly if you miss one expensive product by a wide margin.
 
 | Dimension | Phase 1 | Phase 2 |
 |-----------|---------|---------|
 | Products | 30 SKUs | 20 SKUs |
 | Target Quarter | FY26 Q2 | FY26 Q2 |
-| Data Available | Actuals, Expert Forecasts, Big Deals, SCMS, VMS | Same + Phase 1 actuals |
-| Our Outcome | ~77% accuracy | **4th Place, National Finals** |
+| Data Available | Actuals, expert forecasts, big deals, SCMS, VMS | Same, plus Phase 1 actuals |
+| Our Outcome | About 77% accuracy | 4th place, CFL-Finals |
 
 ---
 
-## 🏗 Architecture
+## Architecture
 
-Our final model is a **two-layer expert-anchored ensemble with structural guardrails**. The core idea: experts are usually right, but not always, so we make them the primary anchor and use statistical signals to catch the times they're not.
+Our final model is a two-layer expert-anchored ensemble with structural guardrails. The idea behind it is simple: experts are usually right, but not always, so we make them the main driver of the forecast and use statistical signals to catch the moments they go wrong.
 
 ```mermaid
 flowchart TD
-    A["📊 Raw Data Ingestion\n12 quarters actuals + Expert forecasts + SCMS/VMS"] --> B["🧹 Data Cleaning\nBig deal decomposition + Outlier detection"]
+    A["Raw Data Ingestion\n12 quarters actuals + Expert forecasts + SCMS/VMS"] --> B["Data Cleaning\nBig deal decomposition + Outlier detection"]
 
-    B --> C["👥 Expert Layer"]
-    B --> D["📐 Structural Layer"]
+    B --> C["Expert Layer"]
+    B --> D["Structural Layer"]
 
     C --> C1["Bias Correction\nConsistency-gated: same direction 2/3 quarters → 50% correction"]
     C1 --> C2["Outlier Cap\nAny expert > 2× median → capped"]
@@ -97,11 +113,11 @@ flowchart TD
     D3 --> D4
     D4 --> D5["Guardrails\nDecline caps + Growth floors"]
 
-    C3 --> E["⚖️ Adaptive Blend\nexpert_weight = f(avg_accuracy) ∈ 35%–90%"]
+    C3 --> E["Adaptive Blend\nexpert_weight = f(avg_accuracy) ∈ 35%–90%"]
     D5 --> E
 
-    E --> F["📋 IP Phone Reconciliation\nDesk_1 + Desk_2 + Desk_3 = 27,337"]
-    F --> G["✅ Final Forecast\n74,660 total units across 20 products"]
+    E --> F["IP Phone Reconciliation\nDesk_1 + Desk_2 + Desk_3 = 27,337"]
+    F --> G["Final Forecast\n74,660 total units across 20 products"]
 
     style A fill:#1a1a2e,color:#e0e0e0
     style E fill:#16213e,color:#e0e0e0
@@ -110,9 +126,9 @@ flowchart TD
 
 ---
 
-## 📘 Phase 1: The Foundation
+## Phase 1: The Foundation
 
-Phase 1 was our proof of concept. 30 products, a 6-step pipeline, and a lot of learning about what we *didn't* know yet.
+Phase 1 was our proof of concept. 30 products, a 6-step pipeline, and a lot of lessons about what we did not know yet.
 
 ```mermaid
 flowchart LR
@@ -128,56 +144,56 @@ flowchart LR
 
 | Step | What It Does |
 |------|-------------|
-| **Weighted Moving Avg** | Last 4 quarters, weights `[1,2,3,4]/10`. 40% on the most recent quarter. |
-| **Big Deal Cleaning** | If big deals > 10% of total, use clean baseline and add back 50% average big deal volume. |
-| **Expert Ensemble** | 3 teams (DP, Marketing, DS). Outlier removal if any expert is > 2× another. |
-| **Lifecycle Blending** | Stage-aware weights: Sustaining 25/25/50, Decline 40/30/30, NPI 10/5/85. |
-| **Seasonal Index** | `avg(Q2) / avg(all quarters)`, bounded between 0.70 and 1.40. |
-| **Sanity Checks** | Flag anything > ±30% from last actual. Asymmetric loss matters here. |
+| Weighted Moving Average | Uses the last 4 quarters, weighted `[1,2,3,4]/10`. 40% of the weight sits on the most recent quarter. |
+| Big Deal Cleaning | If big deals make up more than 10% of the total, we strip them out for a clean baseline, then add back 50% of the average big deal volume. |
+| Expert Ensemble | Combines 3 teams (DP, Marketing, DS). Removes an outlier if any one expert forecasts more than 2 times another. |
+| Lifecycle Blending | Weights change based on product stage: Sustaining is 25/25/50, Decline is 40/30/30, NPI is 10/5/85. |
+| Seasonal Index | `avg(Q2) / avg(all quarters)`, capped between 0.70 and 1.40 so one weird quarter cannot break the whole forecast. |
+| Sanity Checks | Flags anything more than 30% off from the last actual number in either direction, since overestimating and underestimating are not equally costly. |
 
-### What We Discovered in Phase 1
+### What We Learned in Phase 1
 
-| Innovation | What It Did | Evidence |
-|------------|------------|---------|
-| **Accuracy²-Weighted Ensemble** | −2.4pp ensemble MAPE | Holdout test across 3 quarters |
-| **Damped Trend (Gardner-McKenzie 1985)** | −8.6pp trend MAPE (42.7% → 34.1%) | High-volatility products dramatically improved |
-| **Recency-Weighted Seasonality** | Better Q2 capture | 60% FY25Q2 + 30% FY24Q2 + 10% FY23Q2 |
+| Change | Result | How We Know |
+|--------|--------|--------------|
+| Accuracy-squared weighted ensemble | Ensemble MAPE dropped by 2.4 percentage points | Holdout test across 3 quarters |
+| Damped trend (Gardner-McKenzie, 1985) | Trend MAPE dropped from 42.7% to 34.1% | Biggest gains on our most volatile products |
+| Recency-weighted seasonality | Better Q2 capture | Weighted 60% FY25Q2, 30% FY24Q2, 10% FY23Q2 |
 
-**Phase 1 result: ~77% accuracy.** Solid foundation, but we could already see the cracks. Naive expert averaging. Simplistic bias correction. No per-product tuning. Phase 2 was a rethink, not a polish.
+Phase 1 landed us around 77% accuracy. That is a solid start, but we could already see where it would break. Expert averaging was too naive. Bias correction was too simple. Nothing was tuned per product. Phase 2 needed to be a rethink, not a polish job.
 
 ---
 
-## 🚀 Phase 2: The Evolution
+## Phase 2: The Evolution
 
-Phase 2 wasn't an incremental update. It was a ground-up architectural redesign across 5 major versions.
+Phase 2 was not an update to Phase 1. It was a full rebuild across 5 major versions.
 
-The central question we kept returning to: **when should you trust the experts, and when should statistics override them?**
+The question we kept circling back to: when should you trust the experts, and when should the numbers override them?
 
 ### The Answer We Landed On
 
-Phase 1 analysis showed that **human experts consistently outperform pure statistical methods** for most products. So rather than treating them as one of three equal inputs, we promoted them to **primary anchor** and relegated statistical signals to guardrail duty, catching the rare cases where experts go badly wrong.
+Our Phase 1 results showed something clear: human experts consistently beat pure statistical methods on most products. So instead of treating expert forecasts as just one input among three, we made them the primary anchor of the model. Statistical signals became guardrails, there to catch the rare cases where the experts get it badly wrong, not to compete with them.
 
-### The Signal Independence Problem We Almost Missed
+### The Problem We Almost Missed
 
-During a forensic audit of v4.0, we found a critical flaw lurking in our "7-signal structural ensemble":
+While auditing v4.0, we found something uncomfortable buried in our "7-signal structural ensemble."
 
-| Signal | Source | Actually Independent? |
+| Signal | Where It Comes From | Actually Independent? |
 |--------|--------|:---------------------:|
-| Q2/Q1 Ratio FC | Q2 + Q1 actuals | ✅ Yes |
-| YoY Q2 Growth FC | Q2-to-Q2 trend | ✅ Yes |
-| Q2 Weighted Average | Q2 actuals directly | ❌ No |
-| MA4 | Last 4 quarters | ⚠️ Partially |
-| Big Deal Q2 FC | Big deals + avg = Q2 total | ❌ No |
-| SCMS Q2 Bottom-Up | Channel sums = Q2 total | ❌ No |
-| VMS Q2 Bottom-Up | Vertical sums = Q2 total | ❌ No |
+| Q2/Q1 Ratio Forecast | Q2 and Q1 actuals | Yes |
+| YoY Q2 Growth Forecast | Q2-to-Q2 trend | Yes |
+| Q2 Weighted Average | Q2 actuals directly | No |
+| MA4 | Last 4 quarters | Partially |
+| Big Deal Q2 Forecast | Big deals plus average equals Q2 total | No |
+| SCMS Q2 Bottom-Up | Channel sums equal Q2 total | No |
+| VMS Q2 Bottom-Up | Vertical sums equal Q2 total | No |
 
-Five of our seven "independent" signals were just different ways of packaging the same Q2 actual data. The median of seven correlated signals is not more robust. It's just noisier.
+Five of our seven "independent" signals were the same Q2 actual data wearing different outfits. Taking the median of seven correlated signals does not make the forecast more robust. It just adds noise while looking sophisticated.
 
-**We cut from 7 to 3 genuinely independent signals. Quality over quantity.**
+So we cut it down to three genuinely independent signals. Fewer numbers, more truth in each one.
 
 ---
 
-## 📈 Version History: v1.0 → v7.0
+## Version History: v1.0 to v7.0
 
 ```mermaid
 timeline
@@ -207,62 +223,62 @@ timeline
              : 72,509 total units
         v7.0 : IP Phone aggregate reconciliation
              : 84.3% accuracy on known products
-             : 74,660 total — SUBMITTED ✅
+             : 74,660 total — SUBMITTED 
              
 ```
 
-### Version Delta Table
+### What Changed, Version by Version
 
 | Version | Author | Total Units | Core Change |
 |---------|--------|----------:|-------------|
-| v1.0 | Pranav | ~77,000 | 6-step pipeline (WMA + Trend + Ensemble) |
-| v2.0 | Pranav | ~77,000 | acc² weighting, damped trend (−8.6pp MAPE) |
-| v3.0 | Pranav | 72,530 | Expert-anchored 2-layer architecture |
-| v4.0 | Pranav | 73,226 | Product-specific overrides, Q2 bottom-up |
-| v5.0 | Pranav | 69,361 | Forensic audit: 8 flaws fixed, signal pruning |
+| v1.0 | Pranav | ~77,000 | 6-step pipeline: weighted moving average, trend, ensemble |
+| v2.0 | Pranav | ~77,000 | Accuracy-squared weighting, damped trend (MAPE down 8.6pp) |
+| v3.0 | Pranav | 72,530 | Moved to the expert-anchored 2-layer architecture |
+| v4.0 | Pranav | 73,226 | Product-specific overrides, proper Q2 bottom-up data |
+| v5.0 | Pranav | 69,361 | Forensic audit: 8 flaws fixed, signals pruned |
 | v6.0 | Manas | 73,629 | Damped equal weights, pattern-based rules |
-| v6.1 | Manas | 72,509 | Backtest-validated MA4 revert + safety net |
-| **v7.0** | **Aarya** | **74,660** | **Aggregate reconciliation** |
+| v6.1 | Manas | 72,509 | Backtest-validated MA4 revert, plus a safety net |
+| v7.0 | Aarya | 74,660 | Aggregate reconciliation. This is the version we submitted. |
 
 ---
 
-## ⚖️ Key Tradeoffs & Hard Decisions
+## Key Tradeoffs and Hard Decisions
 
-This section is the part of most READMEs that gets skipped. We think it's the most important one.
+Most READMEs skip this part. We think it is the most important part, so here it is.
 
-### 1. acc³ Weighting vs. Damped Equal Weights
+### 1. Accuracy-Cubed Weighting vs. Damped Equal Weights
 
-The intuition behind accuracy-cubed weighting is appealing: reward the best expert, punish the worst. The problem is that "best expert" was measured on only 3 quarters of data, which is a noisy estimate of true skill.
+Accuracy-cubed weighting sounds smart on paper: reward your best expert, punish your worst. The problem is that "best expert" was measured on only 3 quarters of data. That is a small enough sample that it can easily lie to you.
 
-When DS had 68% historical accuracy but forecast 22,593 for Product #4, acc³ still gave it enough influence to inflate the final forecast by 60%.
+Case in point: DS had 68% historical accuracy but forecast 22,593 units for Product #4. Accuracy-cubed weighting still gave that single number enough influence to inflate our final forecast by 60%.
 
-We switched to **damped equal weights (Clemen 1989)**, a 60/40 blend of equal weighting and accuracy weighting. Fifty-plus years of forecast combination research consistently shows this outperforms aggressive accuracy weighting when historical accuracy estimates are noisy. Our data confirmed it.
+We switched to damped equal weights instead, a 60/40 blend of equal weighting and accuracy weighting, based on Clemen's 1989 research. Decades of forecast-combination research say this beats aggressive accuracy weighting whenever your accuracy estimates are noisy, which ours clearly were. Our own data backed that up.
 
 ### 2. More Signals vs. Independent Signals
 
-More signals *feel* safer. The median of seven should be more robust than three, right?
+More signals feel safer. Seven inputs should be more reliable than three, right?
 
-Not when five of the seven are just the same number in different clothes. Pruning to three genuinely independent signals wasn't minimalism. It was signal hygiene. Three clean signals outperform seven correlated ones every time.
+Not when five of those seven are just the same number wearing different clothes. Cutting down to three genuinely independent signals was not about keeping things minimal for its own sake. It was signal hygiene. Three clean, uncorrelated signals will beat seven tangled ones every time.
 
-### 3. v7.0 vs. v7.1: Choosing the Model You Can Defend
+### 3. v7.0 vs. v7.1: Picking the Model We Could Actually Defend
 
-We built v7.1. It added SCMS channel-level ratios and a more granular big deal decomposition. Accuracy on known products: ~85%, about 1pp better than v7.0.
+We built a v7.1. It added SCMS channel-level ratios and a more detailed big deal breakdown. Accuracy on known products came out around 85%, roughly a point better than v7.0.
 
-We didn't submit it.
+We did not submit it.
 
-| Factor | v7.0 ✅ | v7.1 ❌ |
+| Factor | v7.0 (submitted) | v7.1 (shelved) |
 |--------|:-------:|:-------:|
-| Known product accuracy | 84.3% | ~85% |
-| Lines of code | 696 | 816 (+17%) |
+| Accuracy on known products | 84.3% | ~85% |
+| Lines of code | 696 | 816, 17% more |
 | Overfitting risk | Low | Moderate |
-| Explainability under questioning | Easy | Harder |
-| Research backing | Strong | Mixed |
+| Can we explain it under questioning? | Easily | With difficulty |
+| Backed by research? | Strong | Mixed |
 
-The M4/M5 competition research is unambiguous: simpler models generalize better to unseen data. We chose the model we could explain, defend, and trust, not the one that squeezed out an extra percentage point on the training set.
+Research from the M4 and M5 forecasting competitions makes this point over and over: simpler models generalize better to data they have not seen. We picked the model we could explain and defend, not the one that squeezed out an extra percentage point on training data we already had.
 
-### 4. When Structural Signals Are Worse Than Doing Nothing
+### 4. When Statistical Signals Do Worse Than Nothing at All
 
-This one stung. Backtesting revealed our structural signals barely outperformed seasonal naive:
+This one was hard to accept. Backtesting showed that our structural signals barely kept up with a plain seasonal naive forecast, and in one version, fell behind it:
 
 ```
 Seasonal Naive avg accuracy:    53.5%
@@ -270,88 +286,88 @@ v5.0 structural avg accuracy:   49.9%
 v6.0 structural avg accuracy:   42.3%
 ```
 
-Rather than removing structural signals entirely (they still serve a guardrail function), we raised the expert weight floor to 35% and added a safety net: if structural deviates more than 40% from naive, shrink it 30% back toward naive. Discipline over pride.
+Instead of ripping out structural signals entirely, since they still catch real edge cases, we raised the expert weight floor to 35% and added a safety net. If the structural forecast strays more than 40% from the naive baseline, we pull it 30% of the way back. Discipline over pride.
 
 ---
 
-## 📊 Results
+## Results
 
 ### Against Real FY26 Q2 Actuals
 
-#### 🟢 Top Performers (> 85% Accuracy)
+#### Top Performers, Above 85% Accuracy
 
 | # | Product | Forecast | Actual | Accuracy |
 |---|---------|:--------:|:------:|:--------:|
-| 9 | Phone Desk_2 | 6,758 | 6,678 | **98.8%** 🏆 |
-| 14 | SW 8P Ethernet | 9,771 | 9,499 | **97.1%** |
-| 13 | SW DC Modular | 385 | 415 | **92.8%** |
-| 2 | SW 8P PoE+ Fiber | 5,756 | 5,243 | **90.2%** |
-| 10 | Phone Desk_3 | 7,281 | 8,312 | **87.6%** |
-| 16 | NGFW_2 | 348 | 402 | **86.6%** |
+| 9 | Phone Desk_2 | 6,758 | 6,678 | 98.8%, our best call |
+| 14 | SW 8P Ethernet | 9,771 | 9,499 | 97.1% |
+| 13 | SW DC Modular | 385 | 415 | 92.8% |
+| 2 | SW 8P PoE+ Fiber | 5,756 | 5,243 | 90.2% |
+| 10 | Phone Desk_3 | 7,281 | 8,312 | 87.6% |
+| 16 | NGFW_2 | 348 | 402 | 86.6% |
 
-#### 🟡 Solid Performers (70–85% Accuracy)
+#### Solid Performers, 70 to 85% Accuracy
 
 | # | Product | Forecast | Actual | Accuracy |
 |---|---------|:--------:|:------:|:--------:|
-| 8 | Phone Video | 4,644 | 3,936 | **82.0%** |
-| 1 | WiFi AP Indoor | 7,598 | 6,162 | **76.7%** |
-| 19 | RTR 4P PoE | 4,067 | 3,251 | **74.9%** |
+| 8 | Phone Video | 4,644 | 3,936 | 82.0% |
+| 1 | WiFi AP Indoor | 7,598 | 6,162 | 76.7% |
+| 19 | RTR 4P PoE | 4,067 | 3,251 | 74.9% |
 
 #### Portfolio Summary
 
 | Metric | Value |
 |--------|-------|
-| Products above 85% accuracy | **6 / 20 (30%)** |
-| Products above 70% accuracy | **12 / 20 (60%)** |
-| Best single prediction | Phone Desk_2: **98.8%** |
+| Products above 85% accuracy | 6 of 20, or 30% |
+| Products above 70% accuracy | 12 of 20, or 60% |
+| Best single prediction | Phone Desk_2 at 98.8% |
 | Our total forecast | 74,660 units |
 | Actual total demand | 95,711 units |
-| Gap | −22% (explained below) |
+| Gap | Down 22%, explained below |
 
 ---
 
-## 🌊 The Surge Nobody Predicted
+## The Surge Nobody Predicted
 
-Our total portfolio missed by 22%. That's a big number, until you look at where it came from.
+Our portfolio missed the total by 22%. That sounds bad until you look at where the miss actually came from.
 
-Four products were responsible for essentially the entire gap:
+Four products account for almost the entire gap:
 
 | # | Product | Forecast | Actual | Surge |
 |---|---------|:--------:|:------:|:-----:|
-| 4 | Phone Desk_1 | 13,298 | **28,011** | **2.1×** |
-| 3 | RTR Branch LTE | 5,471 | **10,486** | **1.9×** |
-| 11 | SW 24P HP PoE | 668 | **1,803** | **2.7×** |
-| 20 | RTR LTE Wireless | 1,556 | **4,008** | **2.6×** |
+| 4 | Phone Desk_1 | 13,298 | 28,011 | 2.1x |
+| 3 | RTR Branch LTE | 5,471 | 10,486 | 1.9x |
+| 11 | SW 24P HP PoE | 668 | 1,803 | 2.7x |
+| 20 | RTR LTE Wireless | 1,556 | 4,008 | 2.6x |
 
-Products #4 and #3 alone carry **55.6% of the cost weight** in the scoring formula. Their ~2× surge was enough to move everyone's portfolio accuracy significantly, not just ours.
+Products #4 and #3 alone carry 55.6% of the cost weight in the scoring formula. Their roughly 2x surge was enough to shift everyone's portfolio accuracy, not just ours.
 
-Phone Desk_1 is the one that still keeps us up at night. It had been labeled "Decline." It had been trending down for two years. Then it posted its highest Q2 in three years.
+Phone Desk_1 is the one we still think about. It had been labeled "Decline." It had been trending down for two straight years. Then, out of nowhere, it posted its highest Q2 in three years.
 
-This isn't a model failure. It's event-driven demand, a mega-deal or large enterprise refresh that existed in a sales pipeline no forecast team had visibility into. No amount of historical data would have caught it.
+This is not a model failure. It looks like event-driven demand, probably a mega-deal or a large enterprise refresh sitting in a sales pipeline that no forecasting team could see. No amount of historical data would have caught it.
 
-The honest lesson: **some demand is fundamentally unforecastable from historical signals alone.** Knowing where the forecastability boundary lies is itself valuable knowledge.
-
----
-
-## 💡 Business Insights
-
-A few things we noticed that go beyond the forecast accuracy numbers:
-
-**1. The Desk_1 surge was product-specific, not a market shift.**
-Desk_2 came in at 98.8% accuracy. Desk_3 at 87.6%. If it were a broad enterprise buying wave, all three phones would have surged together. It wasn't, which points to a single large deal, not a market signal.
-
-**2. WiFi APs have a structural Q2 budget-flush cycle.**
-Q2 history: 2,284 → 6,651 → 8,293. Experts miss the magnitude every single year. Supply chain should be pre-positioning inventory before Q2 begins, not reacting after purchase orders land.
-
-**3. On-prem firewall is quietly contracting.**
-NGFW_1 trajectory: 654 → 1,116 → 748 → 479. Cloud-native security (SASE, Umbrella) is cannibalizing hardware firewall demand steadily. This trend will compound.
-
-**4. Expert consensus is the single strongest accuracy predictor.**
-Products where all three expert teams agreed landed above 90%. Products where they disagreed were our weakest forecasts. When your experts can't agree, your model can't save you.
+The honest takeaway: some demand simply cannot be forecast from historical signals alone. Knowing exactly where that boundary sits is valuable on its own, even if it feels unsatisfying.
 
 ---
 
-## 📁 Repository Structure
+## Business Insights
+
+A few things we noticed that go beyond the raw accuracy numbers.
+
+**1. The Desk_1 surge was specific to that product, not a market-wide shift.**
+Desk_2 came in at 98.8% accuracy. Desk_3 came in at 87.6%. If enterprises were buying phones across the board, all three would have surged together. They did not, which points to one large deal, not a broad market signal.
+
+**2. WiFi APs have a real Q2 budget-flush pattern.**
+Look at the Q2 history: 2,284, then 6,651, then 8,293. Experts miss the size of this jump every single year. Supply chain should be pre-positioning inventory ahead of Q2, not scrambling once purchase orders start landing.
+
+**3. On-prem firewalls are quietly shrinking.**
+NGFW_1's trajectory: 654, 1,116, 748, 479. Cloud-native security like SASE and Umbrella is steadily eating into hardware firewall demand. That trend is not slowing down.
+
+**4. Expert agreement is the strongest predictor of accuracy we found.**
+Products where all three expert teams agreed landed above 90% accuracy. Products where they disagreed were our weakest forecasts, by a wide margin. If your experts cannot agree, no amount of modeling will save you.
+
+---
+
+## Repository Structure
 
 ```
 CCL-Warriors/
@@ -364,36 +380,36 @@ CCL-Warriors/
 │
 ├── phase2/
 │   ├── v5_baseline/
-│   │   ├── forecast_prediction.py     # v5.0 — Forensic-audited engine
+│   │   ├── forecast_prediction.py     # v5.0, forensic-audited engine
 │   │   ├── forensic_audit.py          # Backtesting framework
 │   │   └── deep_analysis.py           # Product-level analysis
 │   │
 │   ├── v6_refinement/
-│   │   ├── forecast_prediction.py     # v6.0 — Research-backed changes
+│   │   ├── forecast_prediction.py     # v6.0, research-backed changes
 │   │   ├── v5_vs_v6_verification.py   # Cross-version comparison
 │   │   └── refinement_analysis.md     # What worked, what didn't
 │   │
 │   ├── v6.1_validated/
-│   │   └── forecast_prediction.py     # v6.1 — Backtest-validated
+│   │   └── forecast_prediction.py     # v6.1, backtest-validated
 │   │
 │   └── v7_final/
-│       ├── forecast_prediction.py     # v7.0 — SUBMITTED MODEL ✅
+│       ├── forecast_prediction.py     # v7.0, the submitted model
 │       └── v7_changes.md              # Changes made and backtested
 │
 ├── analysis/
 │   ├── p2_accuracy_analysis.py        # v5 vs v6.1 vs v7 comparison
 │   ├── v7_comparison_analysis.md      # v7.0 vs v7.1 decision analysis
-│   └── insights_and_improvements.md  # Bugs found and fixed
+│   └── insights_and_improvements.md   # Bugs found and fixed
 │
 └── docs/
-    ├── VERSION_HISTORY.md             # Full v1→v7 change log
+    ├── VERSION_HISTORY.md             # Full v1 to v7 change log
     ├── TRADEOFFS.md                   # Decision rationale
-    └── FORENSIC_AUDIT.md             # 8 flaws found and fixed
+    └── FORENSIC_AUDIT.md              # 8 flaws found and fixed
 ```
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Clone the repository
@@ -412,40 +428,42 @@ python analysis/p2_accuracy_analysis.py
 
 ---
 
-## 🎓 Lessons Learned
+## Lessons Learned
 
-We're writing these for our future selves as much as for anyone reading this.
+We wrote these mostly for our future selves, but they should hold up for anyone else working on a forecasting problem.
 
-**Experts beat statistics, but not unconditionally.**
-Every version that increased expert weight on products with strong historical accuracy improved our score. But blindly following experts on unstable products hurt us. The art is knowing which kind of product you're dealing with.
+**Experts beat statistics, but not without limits.**
+Every version where we gave more weight to experts on historically stable products, our score improved. Every version where we followed experts blindly on unstable products, it hurt us. The skill is telling the two situations apart.
 
-**Signal count means nothing. Signal independence means everything.**
-Seven correlated signals is one signal with extra steps. Three truly independent signals is three genuine views of the same future. Always ask: *what unique information does this signal add?*
+**Signal count does not matter. Signal independence does.**
+Seven correlated signals are really just one signal wearing seven costumes. Three truly independent signals are three real views of the future. Before adding any signal, ask what unique information it actually contributes.
 
-**Backtest everything, including the changes you're proud of.**
-v2.0's damped trend improvement was discovered through holdout testing, not intuition. v6.0's 7 changes were tested. 2 of them hurt accuracy and we reverted them. The discipline to undo your own work is harder than it sounds, and more valuable than it feels.
+**Backtest everything, including the changes you are proud of.**
+The damped trend improvement in v2.0 came from holdout testing, not a hunch. We tested all 7 changes in v6.0. Two of them hurt accuracy, so we reverted them. Undoing your own work is harder than it sounds, and it matters more than it feels like it does in the moment.
 
 **Simpler models generalize better.**
-We built v7.1. It was smarter, more complex, slightly more accurate on the training data. We didn't submit it. The M4/M5 forecasting competition has proven this repeatedly: fewer tunable parameters win on unseen data.
+We built v7.1. It was more sophisticated and slightly more accurate on training data. We still did not submit it. The M4 and M5 forecasting competitions have shown this again and again: models with fewer tunable parameters tend to win on data they have not seen yet.
 
-**Know where the forecastability boundary is.**
-Some demand spikes come from events in a sales pipeline, mega-deals, enterprise refreshes, procurement bursts, that no forecast model can see. Recognizing *when* you're outside the forecastable envelope is itself a skill. A 2.1× surge from a "Decline" product isn't a model failure. It's a category of demand that requires pipeline intelligence, not better statistics.
+**Know where the forecastability boundary sits.**
+Some demand spikes come from things happening in a sales pipeline, mega-deals, enterprise refreshes, procurement bursts, that no forecasting model can see coming. Recognizing when you have hit that boundary is its own skill. A 2.1x surge on a product labeled "Decline" is not a model failure. It is a category of demand that needs pipeline intelligence, not better statistics.
 
-**Intellectual honesty compounds.**
-We reverted changes that hurt. We killed a model we spent days building. We documented the flaws we found in our own work. That discipline, being willing to be wrong about your own decisions, is what separated our v7.0 from the spaghetti most teams submit at the end.
+**Being honest about your own mistakes pays off.**
+We reverted changes that did not work. We shelved a model we had spent days building. We wrote down the flaws we found in our own code instead of hiding them. That willingness to admit when we were wrong is what separated our v7.0 from the rushed, patched-together models most teams submit at the deadline.
 
 ---
 
-## 📜 License
+## License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT License. See [LICENSE](LICENSE) for the details.
 
-----
+---
 
-<div align="center">
+<p align="center"><em>Built with rigor. Tested with discipline. Written down honestly, mistakes included.</em></p>
 
-*Built with rigor. Tested with discipline. Presented with honesty.*
+<p align="center"><strong>CCL Warriors, Cisco Forecast League 2026 Finalists</strong></p>
 
-**CCL Warriors — Cisco Forecast League 2026 National Finalists**
-
-</div>
+<p align="center">
+  <a href="https://github.com/Aruisop/CCL-Warriors">
+    <img src="https://img.shields.io/badge/Get%20Started-Clone%20the%20Repo-1a1a2e?style=for-the-badge" alt="Get Started">
+  </a>
+</p>
